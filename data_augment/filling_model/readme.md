@@ -1,23 +1,22 @@
 ## Filling Model with T5
 
-该项目用于将句子中 [MASK] 位置通过生成模型还原，以实现 UIE 信息抽取中 Mask Then Filling [数据增强策略](../../UIE/readme.md)。
+This project is used to restore the [MASK] position in the sentence through a generative model to achieve `Mask Then Filling` in UIE information extraction [data enhancement strategy] (../../UIE/readme.md).
 
-[Mask Then Fill](https://arxiv.org/pdf/2301.02427.pdf) 是一种基于生成模型的信息抽取数据增强策略。对于一段文本，我们其分为「关键信息段」和「非关键信息段」，包含关键词片段称为「关键信息段」。下面例子中标粗的为 `关键信息片段`，其余的为 `非关键片段`。
+[Mask Then Fill](https://arxiv.org/pdf/2301.02427.pdf) It is a data augmentation strategy for information extraction based on generative models. For a piece of text, we divide it into "key information segment" and "non-key information segment", and the segment containing keywords is called "key information segment". In the following example, the bold ones are `Key Information Fragments`, and the rest are `Non-Key Fragments`。
 
-> **大年三十** 我从 **北京** 的大兴机场 **飞回** 了 **成都**。
+> **New Year's Eve** I flew back to **Chengdu** from **Beijing** Daxing Airport **.
 
+We randomly [MASK] live a part of the "non-key fragment" so that it becomes: 
 
-我们随机 [MASK] 住一部分「非关键片段」，使其变为： 
+> **New Year’s Eve** I flew back to **Chengdu** from **Beijing** [MASK] **.
 
-> **大年三十** 我从 **北京** [MASK] **飞回** 了 **成都**。
+Then, feed the modified sentence to the filling model (T5-Fine Tuned) to restore the sentence and get the newly generated sentence:
 
-随后，将改句子喂给 filling 模型（T5-Fine Tuned）还原句子，得到新生成的句子：
+> **New Year’s Eve** I started from **Beijing** Capital Airport, and **flew back** to **Chengdu**.
 
-> **大年三十** 我从 **北京** 首都机场作为起点，**飞回** 了 **成都**。
+## 1. Environment installation
 
-## 1. 环境安装
-
-本项目基于 `pytorch` + `transformers` 实现，运行前请安装相关依赖包：
+This project is implemented based on `pytorch` + `transformers`, please install related dependencies before running:
 
 ```sh
 pip install -r ../requirements.txt
