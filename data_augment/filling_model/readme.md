@@ -22,24 +22,27 @@ This project is implemented based on `pytorch` + `transformers`, please install 
 pip install -r ../requirements.txt
 ```
 
-## 2. 数据集准备
+## 2. Dataset preparation
 
-项目中提供了一部分示例数据，数据来自DuIE数据集中的文本数据，数据在 `data/` 。
+A part of the sample data is provided in the project, the data comes from the text data in the DuIE dataset, and the data is in `data/` 。
 
-若想使用 `自定义数据` 训练，只需要仿照示例数据构建带 [MASK] 的文本即可，你也可以使用 `parse_data.py` 快速生成基于 `词粒度` 的训练数据：
+If you want to use `custom data` for training, you only need to construct the text with [MASK] according to the example data. You can also use `parse_data.py` to quickly generate training data based on `word granularity`:
 
 ```tsv
 "Bortolaso Guillaume,法国籍[MASK]"中[MASK]位置的文本是：	运动员
+"Bortolaso Guillaume, French Nationality [MASK]". The text in position [MASK] is:   Athlete
 "歌曲[MASK]是由歌手海生演唱的一首歌曲"中[MASK]位置的文本是：	《情一动心就痛》
+"The song [MASK] is a song sung by the singer Haisheng". The text at [MASK] is:   "Love Hurts When You Touch It"
 ...
 ```
 
-每一行用 `\t` 分隔符分开，第一部分部分为 `带[MASK]的文本`，后一部分为 `[MASK]位置的原始文本（label）`。
+Each line is separated by `\t` delimiter, the first part is `text with [MASK]`, and the second part is the original text (label) at `[MASK] position`. 
 
 
-## 3. 模型训练
 
-修改训练脚本 `train.sh` 里的对应参数, 开启模型训练：
+## 3. Model training
+
+Modify the corresponding parameters in the training script `train.sh` to start model training:
 
 ```sh
 python train.py \
@@ -59,7 +62,7 @@ python train.py \
     --device cuda:0
 ```
 
-正确开启训练后，终端会打印以下信息：
+After the training is started correctly, the terminal will print the following information:
 
 ```python
 ...
@@ -85,13 +88,13 @@ global step 2550, epoch: 1, loss: 7.36620, speed: 0.81 step/s
 ...
 ```
 
-在 `logs/T5-Base-Chinese.png` 文件中将会保存训练曲线图：
+The training curve will be saved in `logs/T5-Base-Chinese.png` file:
 
 <img src='assets/T5-Base-Chinese.png'></img>
 
-## 4. 模型预测
+## 4. Model prediction
 
-完成模型训练后，运行 `inference.py` 以加载训练好的模型并应用：
+After completing the model training, run `inference.py` to load the trained model and apply:
 
 ```python
  if __name__ == "__main__":
@@ -105,15 +108,15 @@ global step 2550, epoch: 1, loss: 7.36620, speed: 0.81 step/s
 python inference.py
 ```
 
-得到以下推理结果：
+The following inference results are obtained:
 
 ```python
 maksed text: 
 [
-    '"《μVision2单片机应用程序开发指南》是2005年2月[MASK]图书，作者是李宇"中[MASK]位置的文本是：'
+    '"μVision2 Microcontroller Application Development Guide" is a book [MASK] in February 2005 with Li Yu as the author". The text in the [MASK] position is:'
 ]
 output: 
 [
-    '，中国工业出版社出版的'
+    'published by China Industry Press'
 ]
 ```
